@@ -1,0 +1,9 @@
+username: movies_app
+password: movies135790
+email: movies1357902468@gmail.com
+password_email: movies135790
+
+themoviedb.org
+tipo de uso: Aplicación Móvil
+Nombre de Aplicación: movies_app
+URL de Aplicación: movie_app
