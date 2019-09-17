@@ -30,4 +30,21 @@ class MoviesProvider {
 
   }
 
+  Future<List<Movie>> getMovies(String apiUrl) async {
+
+    final url = Uri.https(_url, apiUrl, {
+      'api_key'   : _apiKey,
+      'language'  : _language
+    });
+
+
+    final resp  = await http.get( url );
+
+    final decodedData = json.decode( resp.body );
+
+    final movies = new Movies.fromJsonList(decodedData['results']);
+
+    return movies.items;
+  }
+
 }
