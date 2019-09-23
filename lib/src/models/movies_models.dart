@@ -20,6 +20,7 @@ class Movies {
 
 
 class Movie {
+  String uniqueId;
   double popularity;
   int voteCount;
   bool video;
@@ -77,4 +78,13 @@ class Movie {
     }
 
   }
+
+  getBackgroundImg() {
+
+    if ( backdropPath != null ) {
+      return 'https://image.tmdb.org/t/p/w500/$backdropPath';
+    }
+
+  }
+
 }

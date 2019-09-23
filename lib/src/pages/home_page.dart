@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/src/providers/movies_provider.dart';
 
+
+import 'package:movies_app/src/search/search_delegate.dart';
+
 //My Widgets
 import 'package:movies_app/src/widgets/card_swiper_widget.dart';
 import 'package:movies_app/src/widgets/movie_horizontal.dart';
@@ -11,15 +14,24 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    moviesProvider.getMoviesPopular();
+
     return Scaffold(
+      backgroundColor: Colors.white.withOpacity(0.85),
       appBar: AppBar(
         centerTitle: false,
-        title: Text('Películas en cines'),
+        title: Text('Información Peliculas'),
         backgroundColor: Colors.indigoAccent,
         actions: <Widget>[
           IconButton(
             icon: Icon( Icons.search ),
-            onPressed: () {},
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: DataSearch(),
+              );
+            },
           )
         ],
       ),
@@ -27,7 +39,16 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            _swiperTarjetas(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(left: 20.0),
+                  child: Text('Peliculas en cartelera', style: Theme.of(context).textTheme.subhead,)
+                ),
+                _swiperTarjetas(),
+              ],
+            ),
             _footer(context)
           ],
         ),
@@ -75,13 +96,14 @@ class HomePage extends StatelessWidget {
           ),
           SizedBox(height: 8.0,),
           
-          FutureBuilder(
-            future: moviesProvider.getMovies('3/movie/popular'),
+          StreamBuilder(
+            stream: moviesProvider.popularStream,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
 
               if (snapshot.hasData) {
                 return MovieHorizontal(
                   movies: snapshot.data,
+                  nextPage: moviesProvider.getMoviesPopular,
                 );
               } else {
                 return Center(
